@@ -1,0 +1,2 @@
+[cvmfsproxy]
+cvmfsproxy01.test.usegalaxy.no ansible_host=158.39.75.244 ansible_user=sysadmin
