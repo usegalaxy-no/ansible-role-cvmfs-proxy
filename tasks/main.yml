@@ -1,1 +1,36 @@
 ---
+
+- name: install packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - squid
+    - firewalld
+
+- name: enable and start services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - squid
+    - firewalld
+
+- name: opening firewall for public
+  firewalld:
+    service: "{{ item }}"
+    permanent: true
+    state: enabled 
+    immediate: yes
+    zone: public
+  loop: "{{ public_ports }}"
+
+- name: opening firewall for proxy
+  firewalld:
+    service: "{{ item }}"
+    permanent: true
+    state: enabled 
+    immediate: yes
+    zone: public
+  loop: "{{ proxy_ports }}"

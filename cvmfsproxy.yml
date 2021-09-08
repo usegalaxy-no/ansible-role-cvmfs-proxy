@@ -1,1 +1,12 @@
 ---
+
+- hosts:
+    - cvmfsproxy
+  vars_files:
+#    - secret_group_vars/global.vault
+#    - group_vars/global.yml
+#    - group_vars/env.yml
+  become: true
+  vars:
+  roles:
+    - ansible-role-cvmfs-proxy
