@@ -32,5 +32,14 @@
     permanent: true
     state: enabled 
     immediate: yes
-    zone: public
+    zone: internal
   loop: "{{ proxy_ports }}"
+
+- name: add cvmfs clients to firewall
+  firewalld:
+    source: "{{ item }}"
+    zone: internal
+    state: enabled
+    permanent: true
+    immediate: yes
+  loop: "{{ cvmfs_clients }}"
