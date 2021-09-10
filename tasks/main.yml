@@ -26,6 +26,11 @@
     zone: public
   loop: "{{ public_ports }}"
 
+- name: refresh squid cache
+  command: /sbin/squid -z
+  notify: restart squid
+
+
 - name: opening firewall for proxy
   firewalld:
     service: "{{ item }}"
@@ -43,3 +48,12 @@
     permanent: true
     immediate: yes
   loop: "{{ cvmfs_clients }}"
+
+- name: copy squid.conf
+  template:
+    src: squid.conf.j2
+    dest: /etc/squid/squid.conf
+    owner: root
+    group: squid
+    mode: 0640
+  notify: restart squid
