@@ -1,22 +1,22 @@
 ---
 
-- hosts: galaxyserver
-  gather_facts: yes
-  become: true
+  - hosts: galaxyserver
+    gather_facts: yes
+    become: true
 
 
-  tasks: 
+    tasks: 
    
-    - name: remove any old cvmfs proxy lines if exists
-      lineinfile:
-        path: /etc/cvmfs/default.local
-        state: absent
-        regexp: '^CVMFS_HTTP_PROXY'
-        backup: yes
+      - name: remove any old cvmfs proxy lines if exists
+        lineinfile:
+          path: /etc/cvmfs/default.local
+          state: absent
+          regexp: '^CVMFS_HTTP_PROXY'
+          backup: yes
 
-    - name: add proxy to cvmfs config
-      lineinfile:
-        path: /etc/cvmfs/default.local
-        line: CVMFS_HTTP_PROXY="{{ cvmfs_proxy }}"
-      notify:
-        - restart autofs
+      - name: add proxy to cvmfs config
+        lineinfile:
+          path: /etc/cvmfs/default.local
+          line: CVMFS_HTTP_PROXY="{{ cvmfs_proxy }}"
+        notify:
+          - restart autofs
