@@ -1,59 +1,7 @@
 ---
 
-- name: install packages
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - squid
-    - firewalld
+- include: server.yml
+  when: config_cvmfsproxy_server == 'yes'
 
-- name: enable and start services
-  service:
-    name: "{{ item }}"
-    state: started
-    enabled: yes
-  with_items:
-    - squid
-    - firewalld
-
-- name: opening firewall for public
-  firewalld:
-    service: "{{ item }}"
-    permanent: true
-    state: enabled 
-    immediate: yes
-    zone: public
-  loop: "{{ public_ports }}"
-
-- name: refresh squid cache
-  command: /sbin/squid -z
-  notify: restart squid
-
-
-- name: opening firewall for proxy
-  firewalld:
-    service: "{{ item }}"
-    permanent: true
-    state: enabled 
-    immediate: yes
-    zone: internal
-  loop: "{{ proxy_ports }}"
-
-- name: add cvmfs clients to firewall
-  firewalld:
-    source: "{{ item }}"
-    zone: internal
-    state: enabled
-    permanent: true
-    immediate: yes
-  loop: "{{ cvmfs_clients }}"
-
-- name: copy squid.conf
-  template:
-    src: squid.conf.j2
-    dest: /etc/squid/squid.conf
-    owner: root
-    group: squid
-    mode: 0640
-  notify: restart squid
+- include: clients.yml
+  when: config_cvmfsproxy_clients == 'yes'
