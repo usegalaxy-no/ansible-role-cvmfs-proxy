@@ -1,6 +1,6 @@
 ---
 
 - include: server.yml
-  when: config_cvmfsproxy_server == 'yes'
+  when: config_cvmfsproxy_server is defined and config_cvmfsproxy_server == 'yes'
 
 - include: clients.yml
