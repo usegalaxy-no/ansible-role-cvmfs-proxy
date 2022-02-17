@@ -40,6 +40,14 @@
       command: cvmfs_config setup
       changed_when: false
 
+    - name: dirty permission fix
+      file:
+        path: /data/part0
+        mode: '0777'
+        recurse: no
+      ignore_errors: True 
+
+
     - name: cvmfs probe
       command: cvmfs_config probe '{{ item }}'
       with_items:
