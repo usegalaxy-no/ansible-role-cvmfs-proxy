@@ -48,12 +48,12 @@
       ignore_errors: True 
 
 
-    - name: cvmfs probe
-      command: cvmfs_config probe '{{ item }}'
-      with_items:
-        - "data.galaxyproject.org"
-        - "{{ datausegalaxy }}"
-        - "cvmfs-config.galaxyproject.org"
+#    - name: cvmfs probe
+#      command: cvmfs_config probe '{{ item }}'
+#      with_items:
+#        - "data.galaxyproject.org"
+#        - "{{ datausegalaxy }}"
+#        - "cvmfs-config.galaxyproject.org"
 
     - name: enable autofs
       service:
