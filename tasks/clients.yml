@@ -1,6 +1,6 @@
 ---
 
-  - hosts: galaxyserver
+  - hosts: galaxyserver, slurm, db
     gather_facts: yes
     become: true
 
