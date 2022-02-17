@@ -4,4 +4,3 @@
   when: config_cvmfsproxy_server == 'yes'
 
 - include: clients.yml
-  when: config_cvmfsproxy_clients == 'yes'
