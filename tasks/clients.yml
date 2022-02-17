@@ -6,7 +6,13 @@
 
 
     tasks: 
-   
+
+      - name: touch cvmfs.local
+        file:
+          path: /etc/cvmfs/default.local
+          state: touch
+          mode: '0644'
+
       - name: remove any old cvmfs proxy lines if exists
         lineinfile:
           path: /etc/cvmfs/default.local
@@ -20,3 +26,40 @@
           line: CVMFS_HTTP_PROXY="{{ cvmfs_proxy }}"
         notify:
           - restart autofs
+
+      - name: create key dir
+        file:
+          path: /etc/cvmfs/keys/galaxyproject.org
+          state: directory
+          mode: '0755'
+
+      - name: add pub key
+        copy:
+          src: cvmfs/data.galaxyproject.org.pub
+          dest: /etc/cvmfs/keys/galaxyproject.org/data.galaxyproject.org.pub
+          mode: '0644'
+          owner: root
+          group: root
+
+      - name: add cvmfs to autofs
+        command: cvmfs_config setup
+        changed_when: false
+
+      - name: enable autofs
+        service:
+          name: autofs
+          state: started
+          enabled: true
+
+  - hosts: galaxyserver, slurm
+    gather_facts: yes
+    become: true
+
+    tasks:
+
+      - name: cvmfs probe
+        command: cvmfs_config probe '{{ item }}'
+        with_items:
+          - "data.galaxyproject.org"
+          - "{{ datausegalaxy }}"
+          - "cvmfs-config.galaxyproject.org"
