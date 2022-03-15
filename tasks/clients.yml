@@ -74,5 +74,4 @@
         name: autofs
         state: restarted
         enabled: true
-
-
+      tags: olaf
