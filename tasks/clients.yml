@@ -22,6 +22,19 @@
         path: /etc/cvmfs/default.local
         line: CVMFS_HTTP_PROXY="{{ cvmfs_proxy }}"
 
+    - name: remove any old cvmfs cache lines if exists
+      lineinfile:
+        path: /etc/cvmfs/default.local
+        state: absent
+        regexp: '^CVMFS_QUOTA_LIMIT'
+        backup: yes
+
+    - name: add proxy to cvmfs config
+      lineinfile:
+        path: /etc/cvmfs/default.local
+        line: CVMFS_QUOTA_LIMIT="{{ cvmfs_cache_size }}"
+
+
     - name: create key dir
       file:
         path: /etc/cvmfs/keys/galaxyproject.org
