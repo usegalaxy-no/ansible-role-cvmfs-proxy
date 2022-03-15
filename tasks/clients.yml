@@ -28,12 +28,13 @@
         state: absent
         regexp: '^CVMFS_QUOTA_LIMIT'
         backup: yes
+      tags: olaf
 
-    - name: add proxy to cvmfs config
+    - name: add cache size to cvmfs proxy
       lineinfile:
         path: /etc/cvmfs/default.local
         line: CVMFS_QUOTA_LIMIT="{{ cvmfs_cache_size }}"
-
+      tags: olaf
 
     - name: create key dir
       file:
